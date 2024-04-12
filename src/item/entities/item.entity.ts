@@ -1,6 +1,7 @@
 // product.entity.ts
 
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Packages } from 'src/packages/entities/package.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm';
 
 @Entity('items')
 export class Item {
@@ -15,4 +16,8 @@ export class Item {
 
   @Column('decimal', { precision: 10, scale: 2 })
   weight: number;
+
+  @ManyToMany(() => Packages)
+  @JoinTable()
+  packages: Packages[];
 }
