@@ -1,55 +1,84 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
-import { Packages } from './entities/package.entity';
-import { Item } from '../item/entities/item.entity';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Item } from '../item/entities/item.entity'; // Import the Item entity
 import { PackageDto } from './dto/create-package.dto';
+import { Packages } from './entities/package.entity';
 
 @Injectable()
 export class PackagesService {
   constructor(
-    @InjectRepository(Packages)
-    private readonly packageRepository: Repository<Packages>,
     @InjectRepository(Item)
     private readonly itemRepository: Repository<Item>,
+
+    @InjectRepository(Packages)
+    private readonly packagesRepository: Repository<Packages>,
   ) {}
 
-  async createPackages(packageDto: PackageDto): Promise<Packages[]> {
-    const { selectedItems } = packageDto;
+  async createPackages(Ids: number[] | { Ids: number[] }): Promise<Item[]> {
+    // If Ids is an object with an Ids property, extract the array from it
+    const idsArray = Array.isArray(Ids) ? Ids : (Ids as { Ids: number[] }).Ids;
 
-    // Fetch items based on the provided item IDs
-const items = await this.itemRepository.find({ where: { id: In(selectedItems) } });
-
-    // Calculate total weight and total price of the items
-    let totalWeight = 0;
-    let totalPrice = 0;
-    for (const item of items) {
-      totalWeight += item.weight;
-      totalPrice += item.price;
+    // Check if idsArray is an array
+    if (!Array.isArray(idsArray)) {
+      throw new Error('Input is not an array');
     }
 
-    // Calculate courier price based on total weight
-    const courierPrice = this.calculateCourierPrice(totalWeight);
+    // Convert the array to a Set to remove duplicates, then convert it back to an array of numbers
+    const uniqueIds = Array.from(new Set(idsArray));
 
-    // Create a new package with the provided data
-    const newPackage = new Packages();
-  
-    newPackage.totalWeight = totalWeight;
-    newPackage.totalPrice = totalPrice;
-    newPackage.courierPrice = courierPrice;
+    const items: Item[] = [];
+    for (const id of uniqueIds) {
+      // Extract the id property from the items passed as Ids
+      const item = await this.itemRepository.findOneBy({ id });
+      if (!item) {
+        throw new NotFoundException(`Item with ID ${id} not found`);
+      }
+      items.push(item);
+    }
 
-    // Save the new package to the database
-    const createdPackage = await this.packageRepository.save(newPackage);
+    return items;
 
-    // Return the created package
-    return [createdPackage];
+    //logic to calculate the total price of items returned
+
+    
   }
 
-  private calculateCourierPrice(totalWeight: number): number {
-    // Your logic to calculate courier price based on total weight
-    // For example:
-    const baseRate = 10; // Base rate for shipping
-    const ratePerKg = 5; // Rate per kilogram for additional weight
-    return baseRate + ratePerKg * Math.ceil(totalWeight / 1000); // Assuming weight is in grams, converting to kilograms
-  }
+
+// async createPackages(Ids: any): Promise<Item[]> {
+//   // If Ids is an object with an Ids property, extract the array from it
+//   const idsArray = Array.isArray(Ids) ? Ids : Ids.Ids;
+
+//   // Check if idsArray is an array
+//   if (!Array.isArray(idsArray)) {
+//     throw new Error('Input is not an array');
+//   }
+
+//   // Convert the array to a Set to remove duplicates, then convert it back to an array of numbers
+//   const uniqueIds = Array.from(new Set(idsArray));
+
+//   const items: Item[] = [];
+//   for (const id of uniqueIds) {
+//     // Extract the id property from the items passed as Ids
+//     const item = await this.itemRepository.findOneBy({ id });
+//     if (!item) {
+//       throw new NotFoundException(`Item with ID ${id} not found`);
+//     }
+//     items.push(item);
+//   }
+
+//   return items;
+// }
+
+
+
+
+
 }
+
+
+
+
+
+  
+

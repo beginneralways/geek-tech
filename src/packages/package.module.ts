@@ -13,6 +13,8 @@ import { Item } from 'src/item/entities/item.entity';
 
     ]),
   
+    
+  
   ],
   controllers: [PackageController],
   providers: [PackagesService, ItemService], // Ensure ItemService is provided

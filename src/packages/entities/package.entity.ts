@@ -5,15 +5,18 @@ export class Packages {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('simple-array', { nullable: true })
-  selectedItems: number[];
+  // @Column('simple-array', { nullable: true })
+  // selectedItems: number[];
 
-  @Column('decimal', { precision: 10, scale: 2, nullable: true })
+  @Column('simple-array', { nullable: true })
+  Ids: number[];
+
+  @Column('decimal', { nullable: true })
   totalWeight: number;
 
-  @Column('decimal', { precision: 10, scale: 2, nullable: true })
+  @Column('decimal', {  nullable: true })
   totalPrice: number;
 
-  @Column('decimal', { precision: 10, scale: 2, nullable: true })
+  @Column('decimal', {  nullable: true })
   courierPrice: number;
 }
