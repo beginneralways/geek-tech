@@ -13,9 +13,9 @@ export class PackageController {
   @Post()
   @ApiOperation({summary: 'Create Package'})
   @ApiBody({type: PackageDto["Ids"]})
-  create(@Body() Ids: PackageDto["Ids"]) {
-    return this.packageService.createPackages(Ids);
+  create(@Body() request: { Ids: any, customerName: string }) {
+    const { Ids, customerName } = request;
+    return this.packageService.createPackagesAndOrder(customerName, Ids);
   }
-
- 
 }
+

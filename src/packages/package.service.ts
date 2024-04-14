@@ -3,13 +3,37 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Item } from '../item/entities/item.entity';
 import { Packages } from './entities/package.entity';
+import { Order } from 'src/order/entities/order.entity';
 
 @Injectable()
 export class PackagesService {
     constructor(
         @InjectRepository(Item)
         private readonly itemRepository: Repository<Item>,
+        @InjectRepository(Packages)
+        private readonly packageRepository: Repository<Packages>,
+        @InjectRepository(Order)
+        private readonly orderRepository: Repository<Order>,
     ) {}
+
+    async createPackagesAndOrder(customerName: string, Ids: number[] | { Ids: number[] }): Promise<{ customerName: string, orders: Order[] }> {
+        // Create packages
+        const packages = await this.createPackages(Ids);
+
+        // Create and save order for each package
+        const orders: Order[] = [];
+        for (const pkg of packages) {
+            const order = new Order();
+            order.customerName = customerName;
+            // order.package = pkg;
+            order.totalPrice = pkg.totalPrice;
+            order.courierPrice = pkg.courierPrice;
+            await this.orderRepository.save(order);
+            orders.push(order);
+        }
+
+        return { customerName, orders };
+    }
 
     async createPackages(Ids: number[] | { Ids: number[] }): Promise<Packages[]> {
         // If Ids is an object with an Ids property, extract the array from it
@@ -70,6 +94,9 @@ export class PackagesService {
         packages.forEach(pkg => {
             pkg.courierPrice = this.calculateCourierPrice(pkg.totalWeight);
         });
+
+        // Save packages to the database
+        await this.packageRepository.save(packages);
 
         return packages;
     }

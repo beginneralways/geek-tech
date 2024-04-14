@@ -11,6 +11,15 @@ export class Order {
   @Column()
   customerName: string;
 
-  // @OneToMany(() => Packages, packages=> packages.order)
+  // @OneToMany(() => Packages, (packages) => packages.order)
   // packages: Packages[];
+
+  @Column()
+  totalPrice: number;
+
+  @Column()
+  courierPrice: number;
+
+  // @Column()
+  // package: string;
 }

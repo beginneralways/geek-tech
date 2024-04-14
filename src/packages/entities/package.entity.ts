@@ -1,5 +1,5 @@
 import { Item } from 'src/item/entities/item.entity';
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 
 @Entity('Packages')
 export class Packages {
@@ -22,7 +22,9 @@ export class Packages {
   courierPrice: number;
 
   @Column('simple-array', { nullable: true })
-  items:Item[]
+  items:Item[];
+
+
 
   
 }
