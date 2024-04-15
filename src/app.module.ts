@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MySqlConfigService } from './config/mysql.config';
 import { ItemModule } from './item/item.module';
+import { PackageModule } from './packages/package.module';
+import { OrderModule } from './order/order.module';
 
 
 @Module({
@@ -12,6 +14,8 @@ import { ItemModule } from './item/item.module';
       useClass: MySqlConfigService
     }),
   ItemModule,
+  PackageModule,
+  OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],
