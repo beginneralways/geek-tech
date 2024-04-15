@@ -6,6 +6,8 @@ import { MySqlConfigService } from './config/mysql.config';
 import { ItemModule } from './item/item.module';
 import { PackageModule } from './packages/package.module';
 import { OrderModule } from './order/order.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -16,6 +18,8 @@ import { OrderModule } from './order/order.module';
   ItemModule,
   PackageModule,
   OrderModule,
+  UsersModule,
+  AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
