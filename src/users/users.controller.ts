@@ -1,21 +1,19 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, NotFoundException, ConsoleLogger, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
-import { ApiTags, ApiResponse, ApiOperation, ApiBadRequestResponse, ApiParam, ApiOkResponse, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/user.entity';
+import { ApiTags, ApiResponse, ApiOperation, ApiBadRequestResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt.auth.guard';
 
 
 
 @Controller('users')
-@ApiTags('Users') // Add this decorator to group endpoints in Swagger UI
-@ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+@ApiTags('Users') 
+// @ApiBearerAuth()
+// @UseGuards(JwtAuthGuard)
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
-    @ApiOperation({ summary: 'Create User' })
+    @ApiOperation({ summary: 'Register User' })
     @ApiResponse({
         status: 201,
         description: 'The user has been successfully created.',

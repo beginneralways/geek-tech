@@ -68,7 +68,7 @@ export class PackagesService {
                 const newPackage = new Packages();
                 newPackage.totalPrice = currentPackageTotalPrice;
                 newPackage.totalWeight = currentPackageTotalWeight;
-                newPackage.items = currentPackageItems;
+                // newPackage.items = currentPackageItems;
                 
               
                 packages.push(newPackage);
@@ -90,7 +90,7 @@ export class PackagesService {
             const newPackage = new Packages();
             newPackage.totalPrice = currentPackageTotalPrice;
             newPackage.totalWeight = currentPackageTotalWeight;
-            newPackage.items = currentPackageItems;
+            // newPackage.items = currentPackageItems;
             packages.push(newPackage);
         }
 
