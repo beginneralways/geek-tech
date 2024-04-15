@@ -18,8 +18,6 @@ export class UsersService {
 
     async create(createUserDto: CreateUserDto): Promise<any> {
         const user = this.userRepository.create(createUserDto);
-        //send welcome mail
-        
         return {
             data: await this.userRepository.save(user),
         };

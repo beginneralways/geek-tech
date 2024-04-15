@@ -8,12 +8,6 @@ import { JwtAuthGuard } from 'src/auth/jwt.auth.guard';
 // import { UpdatePackageDto } from './dto/update-package.dto';
 
 @Controller('package')
-// @ApiBearerAuth()
-// @UseGuards(JwtAuthGuard)
-
-
-
-
 export class PackageController {
   constructor(private readonly packageService: PackagesService) {}
 
