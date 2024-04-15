@@ -25,6 +25,13 @@ export class ItemController {
   async createMultipleItems(@Body() ItemDto: ItemDto[]): Promise<Item[]> {
     return this.itemService.createMultipleItems(ItemDto);
   }
+
+  @ApiOperation({ summary: 'Get All Items' })
+  @Get('batch')
+  async getallItems(): Promise<Item[]> {
+    return this.itemService.getAllItems();
+  }
+
 }
 
 

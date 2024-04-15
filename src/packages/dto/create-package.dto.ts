@@ -26,5 +26,8 @@ export class PackageDto {
   courierPrice: number;
 
   @ApiHideProperty()
-  items: Item[]
+  items: Item[];
+
+  @ApiHideProperty()
+  customerName: string;
 }

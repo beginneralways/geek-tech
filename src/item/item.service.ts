@@ -36,5 +36,11 @@ async createItem(item: ItemDto) {
     return items;
   }
 
+  //get all items 
+
+  async getAllItems(): Promise<Item[]> {
+    return await this.itemRepository.find();
+  }
+
 
 }

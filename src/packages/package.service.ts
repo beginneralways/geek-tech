@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Item } from '../item/entities/item.entity';
 import { Packages } from './entities/package.entity';
 import { Order } from 'src/order/entities/order.entity';
+import { request } from 'http';
 
 @Injectable()
 export class PackagesService {
@@ -28,6 +29,7 @@ export class PackagesService {
             // order.package = pkg;
             order.totalPrice = pkg.totalPrice;
             order.courierPrice = pkg.courierPrice;
+            
             await this.orderRepository.save(order);
             orders.push(order);
         }
@@ -67,6 +69,8 @@ export class PackagesService {
                 newPackage.totalPrice = currentPackageTotalPrice;
                 newPackage.totalWeight = currentPackageTotalWeight;
                 newPackage.items = currentPackageItems;
+                
+              
                 packages.push(newPackage);
 
                 // Reset current package variables for the next package
@@ -94,6 +98,7 @@ export class PackagesService {
         packages.forEach(pkg => {
             pkg.courierPrice = this.calculateCourierPrice(pkg.totalWeight);
         });
+        
 
         // Save packages to the database
         await this.packageRepository.save(packages);
